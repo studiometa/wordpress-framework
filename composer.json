@@ -1,0 +1,88 @@
+{
+  "name": "studiometa/wordpress-framework",
+  "type": "library",
+  "description": "Studio Meta WordPress framework.",
+  "license": "MIT",
+  "authors": [
+      {
+          "name": "Studio Meta",
+          "email": "agence@studiometa.fr"
+      }
+  ],
+  "require": {
+    "php": "^7.3",
+    "vlucas/phpdotenv": "^3.4",
+    "johnpbloch/wordpress": "5.*",
+    "timber/timber": "^1.10",
+    "studiometa/wp-toolkit": "^1.0@alpha",
+    "boxuk/wp-muplugin-loader": "^1.0",
+    "djboris88/twig-commented-include": "^1.2",
+    "studiometa/twig-toolkit": "^1.0"
+  },
+  "require-dev": {
+    "wpackagist-plugin/query-monitor": "^3.6",
+    "squizlabs/php_codesniffer": "^3.4",
+    "wp-coding-standards/wpcs": "^2.1",
+    "wp-cli/wp-cli-bundle": "^2.2",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+    "phpstan/phpstan": "^0.12.50",
+    "szepeviktor/phpstan-wordpress": "^0.7.5",
+    "satesh/phpcs-gitlab-report": "^1.0",
+    "roave/security-advisories": "dev-latest"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "scripts": {
+    "db:export": "bin/db-export.sh",
+    "db:import": "bin/db-import.sh",
+    "post-install-cmd": [
+      "bin/cleanup-composer-install.sh",
+      "bin/generate-wp-config.sh"
+    ],
+    "post-update-cmd": [
+      "bin/cleanup-composer-install.sh",
+      "bin/generate-wp-config.sh"
+    ],
+    "phpstan": "phpstan analyse --memory-limit=512M",
+    "test": "echo 'No test specified' && exit 0",
+    "phpcs": "phpcs -s --colors --extensions=php --standard=./phpcs.xml"
+  },
+  "config": {
+    "optimize-autoloader": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Studiometa\\": "web/wp-content/themes/<%= slug %>/app"
+    }
+  },
+  "extra": {
+    "installer-types": [
+      "library",
+      "wordpress-plugin",
+      "wordpress-theme",
+      "wordpress-muplugin",
+      "wordpress-dropin"
+    ],
+    "installer-paths": {
+      "web/wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "web/wp-content/themes/{$name}/": [
+        "type:wordpress-theme"
+      ],
+      "web/wp-content/mu-plugins/{$name}/": [
+        "type:wordpress-muplugin"
+      ],
+      "web/wp-content/{$name}/": [
+        "type:wordpress-dropin"
+      ]
+    },
+    "wordpress-install-dir": "web/wp/"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
